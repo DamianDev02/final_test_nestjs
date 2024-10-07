@@ -1,5 +1,6 @@
-import { Role } from "src/common/enums/role.enum";
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Role } from "../../common/enums/role.enum";
+import { Tournament } from "../../tournament/entities/tournament.entity";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class Player extends BaseEntity {
@@ -23,6 +24,10 @@ export class Player extends BaseEntity {
 
     @Column({ type: 'enum', default: Role.PLAYER, enum: Role })
     role: Role;
+
+    @ManyToMany(() => Tournament, (tournament) => tournament.players)
+    tournaments: Tournament[];
+
 
     @CreateDateColumn()
     createdAt: Date;
