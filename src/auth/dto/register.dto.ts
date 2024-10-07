@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, IsString, MinLength, MaxLength, IsNumber } from 'class-validator';
 
-export class CreatePlayerDto {
+export class RegisterDto {
     @IsString()
     @IsNotEmpty()
     name: string;
