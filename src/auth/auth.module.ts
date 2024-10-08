@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { BcryptService } from '../common/services/bcrypt.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PlayerModule } from '../player/player.module';
@@ -21,5 +21,6 @@ import { PlayerModule } from '../player/player.module';
   ],
   controllers: [AuthController],
   providers: [AuthService, BcryptService],
+  exports: [AuthService, JwtModule]
 })
 export class AuthModule {}

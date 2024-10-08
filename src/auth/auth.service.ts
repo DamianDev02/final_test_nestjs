@@ -3,7 +3,8 @@ import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { BcryptService } from '../common/services/bcrypt.service';
-import { PlayerService } from 'src/player/player.service';
+import { PlayerService } from '../player/player.service';
+import { RegisterAdminDto } from './dto/registerAdmin.dto';
 
 @Injectable()
 export class AuthService {
@@ -18,8 +19,8 @@ export class AuthService {
     return this.jwtService.sign(payload);
   }
 
-  async registerUser(registerDto: RegisterDto): Promise<RegisterDto> {
-    return this.playerService.createPlayer(registerDto)
+  async registerPlayer(registerDto: RegisterDto): Promise<RegisterDto> {
+    return this.playerService.create(registerDto)
   }
 
   async loginUser({ email, password }: LoginDto) {
@@ -39,6 +40,11 @@ export class AuthService {
       accessToken
     };
   }
+
+  async registerAdmin(adminDto: RegisterAdminDto) : Promise<RegisterAdminDto> {
+    return this.playerService.create(adminDto)
+  }
+
 
 
 }

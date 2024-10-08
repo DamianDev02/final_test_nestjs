@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { PlayerService } from './player.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Player } from './entities/player.entity';
-import { BcryptService } from 'src/common/services/bcrypt.service';
+import { BcryptService } from '../common/services/bcrypt.service';
 
 @Module({
   imports: [
