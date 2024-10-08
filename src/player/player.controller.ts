@@ -3,7 +3,9 @@ import { PlayerService } from './player.service';
 import { UpdatePlayerDto } from './dto/update-player.dto';
 import { UpdateScorePLayerDto } from './dto/updateScore.dto';
 import { Player } from './entities/player.entity';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('players')
 @Controller('players')
 export class PlayerController {
   constructor(private readonly playerService: PlayerService) {}
