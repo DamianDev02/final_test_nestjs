@@ -45,6 +45,18 @@ export class MatchService extends GenericService<Match> {
         }));
     }
 
+    private assignRandomScores(players: Player[]): void {
+        players.forEach(player => {
+            player.score = Math.floor(Math.random() * 101); 
+        });
+    }
+
+    private async updatePlayerScores(players: Player[]): Promise<void> {
+        
+        await Promise.all(players.map(player => this.playerService.updateScoreUser(player.id, { score: player.score })));
+    }
+
+
     async getAllMatches(): Promise<Match[]> {
         return super.findAll();
     }
@@ -62,11 +74,16 @@ export class MatchService extends GenericService<Match> {
         const players = await this.playerService.findAllPlayers();
         const tournament = await this.findTournamentById(tournamentId);
 
+        this.assignRandomScores(players);
+
+        await this.updatePlayerScores(players);
+
         const match = this.matchRepository.create({
             tournament,
             players: players.map(player => player.id),
         });
 
+        
         this.determineMatchWinner(match, players);
         await this.matchRepository.save(match);
 
