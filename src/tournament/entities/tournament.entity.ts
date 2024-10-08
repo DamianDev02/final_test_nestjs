@@ -1,5 +1,6 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Player } from '../../player/entities/player.entity';
+import { Match } from '../../match/entities/match.entity';
 
 @Entity()
 export class Tournament extends BaseEntity {
@@ -17,6 +18,9 @@ export class Tournament extends BaseEntity {
 
     @ManyToMany(() => Player, (player) => player.tournaments)
     players: Player[];
+
+    @OneToMany(() => Match, (match) => match.tournament)
+    matches: Match[];
 
     @CreateDateColumn()
     createdAt: Date;

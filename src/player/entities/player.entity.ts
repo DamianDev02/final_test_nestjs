@@ -10,7 +10,7 @@ export class Player extends BaseEntity {
     @Column()
     name: string
 
-    @Column()
+    @Column({nullable:true})
     nickname: string
 
     @Column()
@@ -25,9 +25,14 @@ export class Player extends BaseEntity {
     @Column({ type: 'enum', default: Role.PLAYER, enum: Role })
     role: Role;
 
+    @Column({default: 0})
+    score: number
+
+    @Column({ default: false }) 
+    isInMatch: boolean;
+
     @ManyToMany(() => Tournament, (tournament) => tournament.players)
     tournaments: Tournament[];
-
 
     @CreateDateColumn()
     createdAt: Date;

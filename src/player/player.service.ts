@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Player } from './entities/player.entity';
 import { Repository } from 'typeorm';
-import { GenericService } from 'src/common/services/base.service';
-import { BcryptService } from 'src/common/services/bcrypt.service';
+import { GenericService } from '../common/services/base.service';
+import { BcryptService } from '../common/services/bcrypt.service';
+import { UpdateScorePLayerDto } from './dto/updateScore.dto';
 
 @Injectable()
 export class PlayerService extends GenericService<Player> {
@@ -14,7 +14,7 @@ private readonly bcryptService: BcryptService){
     super(playerRepository);
   }
 
-  async createPlayer(createPlayerDto: CreatePlayerDto): Promise<Player> {
+  async create(createPlayerDto: any): Promise<Player> {
     const hashedPassword = await this.bcryptService.hashPassword(createPlayerDto.password);
     const newPlayer = { ...createPlayerDto, password: hashedPassword}
     return await super.create(newPlayer);
@@ -25,7 +25,9 @@ private readonly bcryptService: BcryptService){
   }
 
   async findPlayerById(id: string): Promise<Player> {
-    return super.findOne(id)
+    return this.playerRepository.findOne({where: {id},
+      select: ['id','name', 'nickname', 'age']
+    })
   }
 
   async updatePlayer(id:string, updatePlayerDto: UpdatePlayerDto): Promise<Player> {
@@ -46,4 +48,11 @@ private readonly bcryptService: BcryptService){
       select: ['id', 'email', 'password', 'role'],
     });
   }
+
+  async updateScoreUser(id: string, updateScorePlayerDto: UpdateScorePLayerDto): Promise<Player> {
+    const player = await this.playerRepository.findOne({ where: { id } });
+    player.score = updateScorePlayerDto.score;
+    return this.playerRepository.save(player);
+}
+
 }
